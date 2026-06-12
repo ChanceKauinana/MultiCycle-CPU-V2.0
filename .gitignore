@@ -1,0 +1,32 @@
+# Vivado generated files
+*.jou
+*.log
+*.str
+*.tmp
+*.backup.jou
+*.backup.log
+
+# Vivado project output folders
+.cache/
+.hw/
+.ip_user_files/
+.runs/
+.sim/
+.srcs/
+.gen/
+.Xil/
+
+# Bitstreams and generated outputs
+*.bit
+*.bin
+*.ltx
+*.mcs
+
+# Simulation
+*.wdb
+*.vcd
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.vscode/
