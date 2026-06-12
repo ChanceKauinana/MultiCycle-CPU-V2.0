@@ -30,3 +30,6 @@
 .DS_Store
 Thumbs.db
 .vscode/
+
+#Original Vivado Project
+Simple_CPU/
