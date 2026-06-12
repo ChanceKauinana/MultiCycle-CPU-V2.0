@@ -1,43 +1,51 @@
 `timescale 1ns / 1ps
 
 module seven_seg_display(
-    input clk,               // 100 MHz clock
-    input [15:0] value,      // 4-digit hex value to display
-    output reg [6:0] seg,    // Segments a-g
-    output reg [3:0] an      // Anode control for 4 digits
+    input clk,
+    input [15:0] value,
+    output reg [6:0] seg,
+    output reg [3:0] an
 );
 
     reg [3:0] digit;
-    reg [1:0] digit_select = 0;
-    reg [19:0] refresh_counter = 0; // Refresh counter (controls multiplex speed)
+    reg [1:0] digit_select;
+    reg [19:0] refresh_counter = 20'd0;
 
     always @(posedge clk) begin
-        refresh_counter <= refresh_counter + 1;
+        refresh_counter <= refresh_counter + 20'd1;
     end
 
     always @(*) begin
-        digit_select = refresh_counter[19:18]; // changes every ~2.6 ms
+        digit_select = refresh_counter[19:18];
+
         case (digit_select)
             2'b00: begin
                 digit = value[3:0];
                 an = 4'b1110;
             end
+
             2'b01: begin
                 digit = value[7:4];
                 an = 4'b1101;
             end
+
             2'b10: begin
                 digit = value[11:8];
                 an = 4'b1011;
             end
+
             2'b11: begin
                 digit = value[15:12];
                 an = 4'b0111;
             end
+
+            default: begin
+                digit = 4'h0;
+                an = 4'b1111;
+            end
         endcase
     end
 
-    // HEX to 7-seg decoder
     always @(*) begin
         case (digit)
             4'h0: seg = 7'b1000000;
@@ -56,7 +64,7 @@ module seven_seg_display(
             4'hD: seg = 7'b0100001;
             4'hE: seg = 7'b0000110;
             4'hF: seg = 7'b0001110;
-            default: seg = 7'b1111111; // off
+            default: seg = 7'b1111111;
         endcase
     end
 
